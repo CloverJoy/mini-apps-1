@@ -5,6 +5,10 @@ let boardState =
 '','',''];
 let message = document.getElementById('message');
 let endgameMessage = document.getElementById('endgame');
+let scoreboard = document.getElementById('scoreboard');
+var xWin = 0;
+var oWin = 0;
+scoreboard.innerHTML = `Total X win: ${xWin}. Total O win: ${oWin}`;
 
 let turnCounter = 0;
 let playerOneWin = false;
@@ -13,6 +17,12 @@ let isDraw = false;
 let playerOneMoveFirst = true;
 //newgame variable
 const refreshBoard = () => {
+  if (playerOneWin) {
+    xWin ++;
+  }
+  if (playerTwoWin) {
+    oWin ++;
+  }
   boardState =
   ['', '', '',
   '', '', '',
@@ -25,14 +35,15 @@ const refreshBoard = () => {
     let current = document.getElementById(i);
     current.innerHTML = '';
   }
-  message.innerHTML = 'Your Turn: Player X';
-  endgameMessage.innerHTML = '';
+  message.innerHTML = 'First player turn';
+  scoreboard.innerHTML = `Total X win: ${xWin}. Total O win: ${oWin}`;
   gameStart();
 }
 //player one move
 const playerOneTurn = (i) => {
-  message.innerHTML = 'Your Turn: Player X';
+  message.innerHTML = 'Second player turn';
   console.log('Player 1 Fired! turn: ' + turnCounter);
+  //determine who move first here
   if (playerOneMoveFirst) {
     event.target.innerHTML = 'X';
     boardState[i] = 'X';
@@ -51,8 +62,9 @@ const playerOneTurn = (i) => {
 
 //player two move
 const playerTwoTurn = (i) => {
-  message.innerHTML = 'Your Turn: Player O';
+  message.innerHTML = 'First player turn';
   console.log('Player 2 Fired! turn: ' + turnCounter);
+  //determine who move second here
   if (playerOneMoveFirst) {
     event.target.innerHTML = 'O';
     boardState[i] = 'O';
@@ -112,6 +124,7 @@ const isEndGame = () => {
 
 //new game init
 const endGame = () => {
+  //check the winner to determine who move first
   if (playerTwoWin) {
     playerOneMoveFirst = false;
   } else if (playerOneWin) {
