@@ -45,7 +45,6 @@ const refreshBoard = () => {
 //player one move
 const playerOneTurn = (i) => {
   message.innerHTML = `Loser / O turn`;
-  console.log('Player 1 Fired! turn: ' + turnCounter);
   //determine who move first here
   if (playerOneMoveFirst) {
     event.target.innerHTML = 'X';
@@ -54,7 +53,6 @@ const playerOneTurn = (i) => {
     event.target.innerHTML = 'O';
     boardState[i] = 'O';
   }
-  console.log(boardState);
   turnCounter ++;
   checkDraw();
   checkWinCon()
@@ -66,7 +64,6 @@ const playerOneTurn = (i) => {
 //player two move
 const playerTwoTurn = (i) => {
   message.innerHTML = `Winner / X turn`;
-  console.log('Player 2 Fired! turn: ' + turnCounter);
   //determine who move second here
   if (playerOneMoveFirst) {
     event.target.innerHTML = 'O';
@@ -75,7 +72,6 @@ const playerTwoTurn = (i) => {
     event.target.innerHTML = 'X';
     boardState[i] = 'X';
   }
-  console.log(boardState);
   turnCounter ++;
   checkDraw();
   checkWinCon();
