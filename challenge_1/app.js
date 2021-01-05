@@ -1,4 +1,6 @@
 //variable
+let xPlayer = window.prompt('X player, Enter your name: ');
+let oPlayer = window.prompt('o Player, Enter your name: ');
 let boardState =
 ['', '', '',
 '', '', '',
@@ -8,7 +10,8 @@ let endgameMessage = document.getElementById('endgame');
 let scoreboard = document.getElementById('scoreboard');
 var xWin = 0;
 var oWin = 0;
-scoreboard.innerHTML = `Total X win: ${xWin}. Total O win: ${oWin}`;
+scoreboard.innerHTML = `Total ${xPlayer} win: ${xWin}. Total ${oPlayer} win: ${oWin}`;
+message.innerHTML = `${xPlayer} move first! after that game winner move first`;
 
 let turnCounter = 0;
 let playerOneWin = false;
@@ -35,13 +38,13 @@ const refreshBoard = () => {
     let current = document.getElementById(i);
     current.innerHTML = '';
   }
-  message.innerHTML = 'First player turn';
-  scoreboard.innerHTML = `Total X win: ${xWin}. Total O win: ${oWin}`;
+  message.innerHTML = `Winner move first`;
+  scoreboard.innerHTML = `Total ${xPlayer} win: ${xWin}. Total ${oPlayer} win: ${oWin}`;
   gameStart();
 }
 //player one move
 const playerOneTurn = (i) => {
-  message.innerHTML = 'Second player turn';
+  message.innerHTML = `Loser / O turn`;
   console.log('Player 1 Fired! turn: ' + turnCounter);
   //determine who move first here
   if (playerOneMoveFirst) {
@@ -62,7 +65,7 @@ const playerOneTurn = (i) => {
 
 //player two move
 const playerTwoTurn = (i) => {
-  message.innerHTML = 'First player turn';
+  message.innerHTML = `Winner / X turn`;
   console.log('Player 2 Fired! turn: ' + turnCounter);
   //determine who move second here
   if (playerOneMoveFirst) {
@@ -90,7 +93,7 @@ const checkWinCon = () => {
       boardState[2] + boardState[5] + boardState[8] === 'XXX' ||
       boardState[0] + boardState[4] + boardState[8] === 'XXX' ||
       boardState[2] + boardState[4] + boardState[6] === 'XXX') {
-    message.innerHTML = 'PLAYER X WIN!'
+    message.innerHTML = `${xPlayer} WIN!`;
     playerOneWin = true;
     return;
   } else if (boardState[0] + boardState[1] + boardState[2] === 'OOO' ||
@@ -101,7 +104,7 @@ const checkWinCon = () => {
   boardState[2] + boardState[5] + boardState[8] === 'OOO' ||
   boardState[0] + boardState[4] + boardState[8] === 'OOO' ||
   boardState[2] + boardState[4] + boardState[6] === 'OOO') {
-    message.innerHTML = 'PLAYER O WIN!'
+    message.innerHTML = `${oPlayer} WIN!`;
     playerTwoWin = true;
     return;
   }
