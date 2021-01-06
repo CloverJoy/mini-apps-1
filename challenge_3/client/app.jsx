@@ -142,7 +142,13 @@ class App extends React.Component {
   }
 
   handleFinalSubmit() {
-    console.log(this.state);
+    let data = this.state;
+    delete data.step;
+    console.log(data)
+    axios.post('/api', data)
+      .then((response) => {
+        console.log(response)
+      });
   }
 
   componentDidMount() {
