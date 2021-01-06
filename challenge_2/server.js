@@ -34,13 +34,12 @@ const jsonToCSV = (json) => {
   }
   flatten(json);
   return result.replace('0,', '0');
-}
+};
 
 app.post('/', (req, res) => {
   let data = JSON.parse(req.body.json);
   console.log(jsonToCSV(data));
   res.send(jsonToCSV(data));
-  res.end();
 });
 
 app.listen(port, () => {

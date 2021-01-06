@@ -1,6 +1,6 @@
 <html>
   <head>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   </head>
   <body>
     <h1>JSON to CSV.</h1>
@@ -8,9 +8,10 @@
       <div>
         <label for="json">Input JSON</label>
         <textarea type="textarea" name="json" id="json" value=""></textarea>
-
-      <button>Send to server</button>
+      <button id="send">Send to server</button>
     </form>
+    <div id="result"></div>
+    <!-- <script src="app.js"></script> -->
   </body>
 </html>
 
