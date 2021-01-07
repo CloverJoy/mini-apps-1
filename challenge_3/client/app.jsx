@@ -1,17 +1,22 @@
 const FormOne = (props) => {
   return (
-    <form onSubmit={props.handleSubmit}>
+    <div>
+      <form onSubmit={props.handleSubmit}>
       <label>Name:
-        <input type="text" name= "name" value={props.name} onChange={props.handleChange}></input>
+        <input type="text" name= "customername" value={props.customername} onChange={props.handleChange}></input>
       </label>
       <label>Email:
         <input type="text" name= "email" value={props.email} onChange={props.handleChange}></input>
       </label>
       <label>Password:
-        <input type="password" name= "password" value={props.password} onChange={props.handleChange}></input>
+        <input type="password" name= "customerpassword" value={props.customerpassword} onChange={props.handleChange}></input>
       </label>
       <input type="submit" value="submit"></input>
     </form>
+    <button onClick={props.handleBack}>GO BACK</button>
+    <button onClick={props.handleBackToHome}>BACK TO SHOPPING</button>
+    </div>
+
   );
 };
 
@@ -29,7 +34,7 @@ const FormTwo = (props) => {
         <input type="text" name= "city" value={props.city} onChange={props.handleChange}></input>
       </label>
       <label>State:
-        <input type="text" name= "state" value={props.state} onChange={props.handleChange}></input>
+        <input type="text" name= "customerstate" value={props.customerstate} onChange={props.handleChange}></input>
       </label>
       <label>Zip Code:
         <input type="text" name= "zipcode" value={props.zipcode} onChange={props.handleChange}></input>
@@ -40,6 +45,7 @@ const FormTwo = (props) => {
       <input type="submit" value="submit"></input>
     </form>
     <button onClick={props.handleBack}>GO BACK</button>
+    <button onClick={props.handleBackToHome}>BACK TO SHOPPING</button>
     </div>
   );
 };
@@ -63,6 +69,7 @@ const FormThree = (props) => {
       <input type="submit" value="submit"></input>
     </form>
     <button onClick={props.handleBack}>GO BACK</button>
+    <button onClick={props.handleBackToHome}>BACK TO SHOPPING</button>
     </div>
   );
 };
@@ -71,7 +78,7 @@ const FinalConfirmation = (props) => {
   let address = `${props.lineone}
   ${props.linetwo}
   ${props.city}
-  ${props.state}
+  ${props.customerstate}
   ${props.zipcode}
   ${props.phonenumber}`;
 
@@ -84,17 +91,27 @@ const FinalConfirmation = (props) => {
     <div>
       <h1>Confirmation</h1>
       <h3>Your name: </h3>
-      <h5>{props.name}</h5>
+      <h5>{props.customername}</h5>
       <h3>Your email: </h3>
       <h5>{props.email}</h5>
       <h3>Your complete Address: </h3>
       <h5>{address}</h5>
       <h3>Your Billing Information: </h3>
       <h5>{billing}</h5>
+      <button onClick={props.handleBackToHome}>BACK TO SHOPPING</button>
       <button onClick={props.handleBack}>GO BACK</button>
       <button onClick={props.handleFinalSubmit}>SUBMIT ORDER</button>
     </div>
   )
+};
+
+const HomePage = (props) => {
+  return (
+    <div>
+      <h1>This is todays deal</h1>
+      <button onClick={props.handleSubmit}>CHECKOUT</button>
+    </div>
+  );
 };
 
 
@@ -102,13 +119,13 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
+      customername: '',
       email: '',
-      password: '',
+      customerpassword: '',
       lineone: '',
       linetwo: '',
       city: '',
-      state: '',
+      customerstate: '',
       zipcode: '',
       phonenumber: '',
       creditcardnumber: '',
@@ -122,6 +139,7 @@ class App extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleBack = this.handleBack.bind(this);
     this.handleFinalSubmit = this.handleFinalSubmit.bind(this);
+    this.handleBackToHome = this.handleBackToHome.bind(this);
 
   }
   handleChange(event) {
@@ -142,13 +160,20 @@ class App extends React.Component {
   }
 
   handleFinalSubmit() {
-    let data = this.state;
+    let data = {...this.state};
     delete data.step;
-    console.log(data)
-    axios.post('/api', data)
+    if (data.customername) {
+      axios.post('/api', data)
       .then((response) => {
-        console.log(response)
+        console.log(response.data)
       });
+    }
+    console.log(this.state)
+    this.handleBackToHome();
+  }
+
+  handleBackToHome() {
+    this.setState({step: 0});
   }
 
   componentDidMount() {
@@ -159,26 +184,27 @@ class App extends React.Component {
   render() {
     let currentStep = this.state.step
     if (currentStep === 0) {
+      return(
+        <HomePage handleSubmit={this.handleSubmit} />
+      );
+    }
+    if (currentStep === 1) {
       return (
-        <FormOne name={this.state.name} email={this.state.email} password={this.state.password} handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
+        <FormOne customername={this.state.customername} email={this.state.email} customerpassword={this.state.customerpassword} handleChange={this.handleChange} handleSubmit={this.handleSubmit} handleBack={this.handleBack} handleBackToHome={this.handleBackToHome}/>
       )
-    } else if (currentStep === 1) {
+    } else if (currentStep === 2) {
       return (
-        <FormTwo lineone={this.state.lineone} linetwo={this.state.linetwo} city={this.state.city} state={this.state.state} zipcode={this.state.zipcode} phonenumber={this.state.phonenumber} handleChange={this.handleChange} handleSubmit={this.handleSubmit} handleBack={this.handleBack}/>
+        <FormTwo lineone={this.state.lineone} linetwo={this.state.linetwo} city={this.state.city} state={this.state.state} zipcode={this.state.zipcode} phonenumber={this.state.phonenumber} handleChange={this.handleChange} handleSubmit={this.handleSubmit} handleBack={this.handleBack} handleBackToHome={this.handleBackToHome}/>
       )
 
-    } else if (currentStep === 2){
+    } else if (currentStep === 3){
       return (
-        <FormThree creditcardnumber={this.state.creditcardnumber} expirydate={this.state.expirydate} cvv={this.state.cvv} billingzip={this.state.billingzip} handleChange={this.handleChange} handleSubmit={this.handleSubmit} handleBack={this.handleBack}/>
+        <FormThree creditcardnumber={this.state.creditcardnumber} expirydate={this.state.expirydate} cvv={this.state.cvv} billingzip={this.state.billingzip} handleChange={this.handleChange} handleSubmit={this.handleSubmit} handleBack={this.handleBack} handleBackToHome={this.handleBackToHome}/>
       );
-    } else if (currentStep === 3) {
+    } else if (currentStep === 4) {
       return (
-        <FinalConfirmation name={this.state.name} email={this.state.email} password={this.state.password} lineone={this.state.lineone} linetwo={this.state.linetwo} city={this.state.city} state={this.state.state} zipcode={this.state.zipcode} phonenumber={this.state.phonenumber} creditcardnumber={this.state.creditcardnumber} expirydate={this.state.expirydate} cvv={this.state.cvv} billingzip={this.state.billingzip} handleFinalSubmit={this.handleFinalSubmit} handleBack={this.handleBack}/>
+        <FinalConfirmation customername={this.state.customername} email={this.state.email} password={this.state.password} lineone={this.state.lineone} linetwo={this.state.linetwo} city={this.state.city} customerstate={this.state.customerstate} zipcode={this.state.zipcode} phonenumber={this.state.phonenumber} creditcardnumber={this.state.creditcardnumber} expirydate={this.state.expirydate} cvv={this.state.cvv} billingzip={this.state.billingzip} handleFinalSubmit={this.handleFinalSubmit} handleBack={this.handleBack} handleBackToHome={this.handleBackToHome}/>
       );
-    } else {
-      return(
-        <h1>END</h1>
-      )
     }
   }
 };
