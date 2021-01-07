@@ -17,5 +17,5 @@ CREATE TABLE customerinformation (
   creditcardnumber varchar(140) NOT NULL,
   expirydate varchar(140) NOT NULL,
   cvv varchar(140) NOT NULL,
-  billingzip varchar(140) NOT NULL,
+  billingzip varchar(140) NOT NULL
 );
