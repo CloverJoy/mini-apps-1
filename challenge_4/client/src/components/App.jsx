@@ -1,7 +1,11 @@
 import React from 'react';
+import Table from './Table.jsx';
 
 const App = () => {
-  return <h1>Hello world from App</h1>
+  return (
+    <Table />
+  )
+
 };
 
 export default App;
