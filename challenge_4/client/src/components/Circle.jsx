@@ -3,7 +3,7 @@ import React from 'react';
 
 const Circle = (props) => {
   return (
-    <button>()</button>
+    <button onClick={props.handleClick} name={[props.rownum, props.colnum]}>()</button>
   )
 };
 
